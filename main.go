@@ -1,10 +1,10 @@
 package main
 
 import (
-	"go-eth/go-listen"
+	go_wallet "go-eth/go-wallet"
 )
 
 func main() {
 
-	go_listen.Checkvalue()
+	go_wallet.Wallet()
 }
