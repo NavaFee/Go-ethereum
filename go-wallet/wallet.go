@@ -22,9 +22,9 @@ func Wallet() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	path_tempt := "1/1/6/7/1/2/4/6/7/2/7/4/2/0/6/4/1/2/8/1/2/3/4/4/5/5/5/5/5/5/5/5/5/5/5/5/5/5/5/5/1"
 	//path := hdwallet.MustParseDerivationPath("m/44'/60'/0'/0/0") //最后一位是同一个助记词的地址id，从0开始，相同助记词可以生产无限个地址
-	path := hdwallet.MustParseDerivationPath("1/1/6/7/1/2/4/6/7/2/7/4/2/0/6/4/1/2/8")
+	path := hdwallet.MustParseDerivationPath(path_tempt)
 	account, err := wallet.Derive(path, false)
 	if err != nil {
 		log.Fatal(err)
