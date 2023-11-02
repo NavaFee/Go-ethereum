@@ -1,28 +1,33 @@
 package main
 
 import (
-	"github.com/ethereum/go-ethereum/common"
 	go_listen "go-eth/go-listen"
-	go_wallet "go-eth/go-wallet"
-	"regexp"
 )
 
 func main() {
 	go_listen.Checkvalue()
-	go_wallet.Wallet()
-	//valid := IsValidAddress("0x0BC2336477531cdBdC89d26455e61Ae80B25eEaC")
-	//fmt.Println(valid) // true
+	//go_wallet.Wallet()
+
 }
 
-// IsValidAddress validate hex address
-func IsValidAddress(iaddress interface{}) bool {
-	re := regexp.MustCompile("^0x[0-9a-fA-F]{40}$")
-	switch v := iaddress.(type) {
-	case string:
-		return re.MatchString(v)
-	case common.Address:
-		return re.MatchString(v.Hex())
-	default:
-		return false
-	}
-}
+//import (
+//	"encoding/hex"
+//	"fmt"
+//	"math/big"
+//)
+//
+//func main() {
+//	hexData := "0000000000000000000000000000000000000000000000000000000000002710"
+//
+//	dataBytes, err := hex.DecodeString(hexData)
+//	if err != nil {
+//		// 处理解码错误
+//		fmt.Println("解码失败:", err)
+//		return
+//	}
+//
+//	dataInt := new(big.Int).SetBytes(dataBytes)
+//	decString := dataInt.String()
+//
+//	fmt.Println("转换结果:", decString)
+//}
