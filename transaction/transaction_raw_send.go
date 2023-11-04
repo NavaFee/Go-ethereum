@@ -18,11 +18,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	rawTx := "f870f86e81eb8502540be400825208944592d8f8d7b001e72cb26a73e4fa1806a51ac79d880de0b6b3a76400008081e6a01225bcfe364cb0dbba1d479809e2c4419606d4b5551474565d914049dd315d8ba00c4cdc8fd208c9e3c937e218388295b23f737f888876eeea4eb4f756a795ef25"
+	rawTx := "f870f86e81eb85012a05f200825208944592d8f8d7b001e72cb26a73e4fa1806a51ac79d880de0b6b3a76400008081e6a061c7388dd32a15dabca63f7f33\n10a6e26666322ce16bdb4e3f442b2c7dedf3fea03d8723dcdc0a7506f55abf9a0270980717436b09ed48fcce1b280652516aa292"
 
 	rawTxBytes, err := hex.DecodeString(rawTx)
 
 	tx := new(types.Transaction)
+
 	rlp.DecodeBytes(rawTxBytes, &tx)
 
 	err = client.SendTransaction(context.Background(), tx)
