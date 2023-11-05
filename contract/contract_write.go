@@ -4,13 +4,13 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"fmt"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethclient"
 	"go-eth/store"
 	"log"
 	"math/big"
-
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethclient"
 )
 
 func main() {
@@ -41,28 +41,44 @@ func main() {
 		log.Fatal(err)
 	}
 
-	auth := bind.NewKeyedTransactor(privateKey)
+	chainId, _ := client.ChainID(context.Background())
+
+	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, chainId)
 	auth.Nonce = big.NewInt(int64(nonce))
 	auth.Value = big.NewInt(0)     // in wei
 	auth.GasLimit = uint64(300000) // in units
 	auth.GasPrice = gasPrice
 
-	input := "1.0"
-	address, tx, instance, err := store.DeployStore(auth, client, input)
+	address := common.HexToAddress("0xe544948a76193b99aBE0083edD0182B1432d4E8A")
+	instance, err := store.NewStore(address, client)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(address.Hex())   // 0x147B8eb97fD247D06C4006D269c90C1908Fb5D54
-	fmt.Println(tx.Hash().Hex()) // 0xdae8ba5444eefdc99f4d45cd0c4f24056cba6a02cefbf78066ef9f4188ff7dc0
+	//key := [32]byte{}
+	//value := [32]byte{}
+	//copy(key[:], []byte("foo"))
+	//copy(value[:], []byte("bar"))
+	//
+	//tx, err := instance.SetItem(auth, key, value)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//txHash := tx.Hash()
+	//fmt.Printf("tx sent: %s", tx.Hash().Hex()) // tx sent: 0x8d490e535678e9a24360e955d75b27ad307bdfb97a1dca51d0f3035dcee3e870
+	//
+	//tx, isPending, err := client.TransactionByHash(context.Background(), txHash)
+	//
+	//for isPending {
+	//	time.Sleep(time.Second * 5)
+	//	fmt.Println("pending...")
+	//	_, isPending, _ = client.TransactionByHash(context.Background(), txHash)
+	//}
 
-	_ = instance
-
-	instance1, err := store.NewStore(address, client)
+	result, err := instance.Version(nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(instance1) // 0x147B8eb97fD247D06C4006D269c90C1908Fb5D54
 
-	instance1.Version(nil)
+	fmt.Println(result) // "bar"
 }
