@@ -5,7 +5,7 @@ import (
 	"github.com/fbsobreira/gotron-sdk/pkg/address"
 )
 
-func EthToTron(str string) string {
+func EthToTron1(str string) string {
 	str = "41" + str[2:]
 	a := address.HexToAddress(str)
 	return a.String()
@@ -18,7 +18,7 @@ func TronToEth(str string) string {
 }
 
 func main() {
-	a := EthToTron("0x9c4ee7ad16cb6bfc2761f64a615585b3351861af")
+	a := EthToTron1("0x8a0ad710d07ffec9850800af9e50506b94a83e7b")
 	//TFPwJf9LAkomTJtV4hBh3BjfspUbUJBYjq
 	fmt.Println("Tron", a)
 	fmt.Println("=====================================")
