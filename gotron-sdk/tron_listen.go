@@ -91,7 +91,7 @@ func main() {
 				// 筛选事件
 				_ = v
 				//fmt.Println("{From", v.Result.From, ",To:", v.Result.To, ",Value", v.Result.Value, "}")
-				// 事件入库 mysql
+				// 过滤事件并入库 mysql
 
 			}
 			startBlock = blockNumber + 1
@@ -101,6 +101,7 @@ func main() {
 
 }
 
+// 获取指定区块的交易事件
 func GetEvents(blockNumber string) (Response, error) {
 
 	url := "https://api.trongrid.io/v1/contracts/TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t/events?event_name=Transfer&only_confirmed=true&limit=200&block_number=" + blockNumber
@@ -137,7 +138,9 @@ func GetEvents(blockNumber string) (Response, error) {
 
 }
 
+// 获取当前最新的区块号
 func GetBlockNumber() (uint64, error) {
+
 	url := "https://api.trongrid.io/v1/blocks/latest/events?only_confirmed=true&limit=1"
 	method := "GET"
 	client := &http.Client{}
