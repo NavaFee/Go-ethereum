@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/shopspring/decimal"
 	"log"
 	"math/big"
 )
@@ -74,11 +75,16 @@ func main() {
 			event.Amount0 = amount0.String()
 			amount1 := new(big.Int).SetBytes(common.FromHex(data[128:]))
 			event.Amount1 = amount1.String()
+			a := decimal.NewFromBigInt(amount0, 0)
+			fmt.Println(a)
+
+			fmt.Println("add liquidity")
 			fmt.Println("Pool_id", log.Address)
 			fmt.Println("TokenId:", event.TokenId)
 			fmt.Println("Liquidity:", event.Liquidity)
 			fmt.Println("Amount0:", event.Amount0)
 			fmt.Println("Amount1:", event.Amount1)
+			fmt.Println("Event Type", "Deposit")
 			fmt.Println("inflow")
 
 			// 再通过tokenId查询position的具体信息
@@ -104,11 +110,19 @@ func main() {
 			event.Amount0 = amount0.String()
 			amount1 := new(big.Int).SetBytes(common.FromHex(data[128:]))
 			event.Amount1 = amount1.String()
+
+			a := decimal.NewFromBigInt(amount0, 0)
+			a.Div(decimal.NewFromInt(1000000000000000000))
+			a = ToDecimal(amount0, 18)
+			fmt.Println(a)
+
+			fmt.Println("remove liquidity")
 			fmt.Println("Pool_id", log.Address)
 			fmt.Println("TokenId:", event.TokenId)
 			fmt.Println("Liquidity:", event.Liquidity)
 			fmt.Println("Amount0:", event.Amount0)
 			fmt.Println("Amount1:", event.Amount1)
+			fmt.Println("Event Type", "Withdraw")
 			fmt.Println("outflow")
 
 			// 再通过tokenId查询position的具体信息
@@ -117,5 +131,21 @@ func main() {
 		}
 
 	}
+
+}
+func ToDecimal(ivalue interface{}, decimals int) decimal.Decimal {
+	value := new(big.Int)
+	switch v := ivalue.(type) {
+	case string:
+		value.SetString(v, 10)
+	case *big.Int:
+		value = v
+	}
+
+	mul := decimal.NewFromFloat(float64(10)).Pow(decimal.NewFromFloat(float64(decimals)))
+	num, _ := decimal.NewFromString(value.String())
+	result := num.Div(mul)
+
+	return result
 
 }
